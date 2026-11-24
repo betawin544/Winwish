@@ -1,5 +1,5 @@
 /**
- * Resolves the backend API origin for production (api.winbet.site on Render) and local dev.
+ * Resolves the backend API origin for production (Render) and local dev.
  */
 const isLocalDevelopment =
   typeof window !== 'undefined' &&
@@ -7,7 +7,7 @@ const isLocalDevelopment =
 
 export const API_ORIGIN = isLocalDevelopment
   ? 'http://localhost:3022'
-  : 'https://api.winbet.site';
+  : 'https://winwish.onrender.com';
 
 export const API_BASE_URL = `${API_ORIGIN}/api`;
 
