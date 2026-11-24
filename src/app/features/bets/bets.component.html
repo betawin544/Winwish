@@ -28,6 +28,17 @@
         <img src="/assets/icons/winbet-mark.png" alt="Winbet">
       </button>
 
+      <button type="button" class="pb-mhead-item pb-mhead-deposit" (click)="openDeposit()" aria-label="Deposit">
+        <span class="pb-mhead-ico pb-mhead-deposit-ico">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+               stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="5" width="20" height="14" rx="2.5"/>
+            <path d="M12 9v6M9 12h6"/>
+          </svg>
+        </span>
+        <span class="pb-mhead-lbl">Deposit</span>
+      </button>
+
       <button type="button" class="pb-mhead-item" (click)="openMyBetsModal()" aria-label="My bets">
         <span class="pb-mhead-ico">
           <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
@@ -111,7 +122,14 @@
           <span>Search</span>
         </button>
 
-        <button type="button" class="pb-deposit-btn" *ngIf="isAuthenticated" (click)="openDeposit()">DEPOSIT</button>
+        <button type="button" class="pb-deposit-btn" (click)="openDeposit()" aria-label="Deposit">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+               stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="5" width="20" height="14" rx="2.5"/>
+            <path d="M12 9v6M9 12h6"/>
+          </svg>
+          <span>DEPOSIT</span>
+        </button>
 
         <div class="pb-balance" *ngIf="isAuthenticated" (click)="openAccountModal()">
           <small>Balance</small>

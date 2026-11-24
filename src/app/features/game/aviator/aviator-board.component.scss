@@ -11,7 +11,19 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.wallet-actions, .room-selector { display: none; }
+.room-selector { display: none; }
+.wallet-actions { display: flex; align-items: center; }
+.wallet-route-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+  min-width: auto; height: 26px; padding: 0 10px;
+  border: 1px solid #ffcf21; border-radius: 6px;
+  background: #f4bc0d; color: #1b180b;
+  font: 800 11px/1 Arial, Helvetica, sans-serif;
+  text-transform: uppercase; letter-spacing: .2px;
+  white-space: nowrap; flex-shrink: 0; cursor: pointer;
+}
+.wallet-route-btn:hover { background: #ffda39; }
+.wallet-route-btn .deposit-btn-icon { width: 14px; height: 14px; flex: 0 0 14px; }
 .chat-toggle-btn { display: inline-flex; width: 30px; height: 30px; min-width: 30px; flex: 0 0 30px; padding: 0; }
 .chat-toggle-btn svg { width: 21px; height: 21px; flex: 0 0 21px; }
 .sidebar-footer button svg { width: 11px; height: 11px; flex-shrink: 0; fill: currentColor; }
@@ -274,6 +286,19 @@
   .nav-actions .balance-badge { padding: calc(4 * var(--phone-unit)) calc(8 * var(--phone-unit)); }
   .nav-actions .balance-amount { font-size: calc(18 * var(--phone-unit)); gap: calc(4 * var(--phone-unit)); }
   .balance-currency { font-size: calc(16 * var(--phone-unit)); }
+  .nav-actions .wallet-route-btn {
+    height: calc(34 * var(--phone-unit));
+    padding: 0 calc(11 * var(--phone-unit));
+    gap: calc(5 * var(--phone-unit));
+    border-radius: calc(8 * var(--phone-unit));
+    font-size: calc(13 * var(--phone-unit));
+    line-height: 1;
+  }
+  .nav-actions .wallet-route-btn .deposit-btn-icon {
+    width: calc(15 * var(--phone-unit));
+    height: calc(15 * var(--phone-unit));
+    flex-basis: calc(15 * var(--phone-unit));
+  }
   .nav-actions .profile-btn { width: calc(29 * var(--phone-unit)); height: calc(26 * var(--phone-unit)); }
   .hamburger-icon, .hamburger-icon i { width: calc(15 * var(--phone-unit)); }
   .chat-toggle-btn svg { width: calc(21 * var(--phone-unit)); height: calc(21 * var(--phone-unit)); flex-basis: calc(21 * var(--phone-unit)); }

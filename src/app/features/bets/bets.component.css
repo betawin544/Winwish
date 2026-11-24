@@ -95,9 +95,10 @@ input { font-family: inherit; }
 }
 
 .pb-deposit-btn {
+  display: inline-flex; align-items: center; gap: 6px;
   background: var(--pb-yellow); color: #1a1a1a;
   font-weight: 900; font-size: 13px; letter-spacing: .4px;
-  padding: 9px 18px; border-radius: 6px;
+  padding: 9px 16px; border-radius: 6px; white-space: nowrap;
   box-shadow: 0 2px 0 var(--pb-yellow-dark);
 }
 .pb-deposit-btn:active { transform: translateY(1px); box-shadow: 0 1px 0 var(--pb-yellow-dark); }
@@ -833,24 +834,30 @@ input { font-family: inherit; }
 .pb-paybill-text strong { font-weight: 900; letter-spacing: .3px; }
 .pb-paybill-cta { color: #dfd0c5; font-size: 12px; white-space: nowrap; }
 
-/* Five-slot phone header */
+/* Six-slot phone header (Menu, Search, Logo, Deposit, My Bets, Balance) */
 .pb-mhead {
   position: relative; z-index: 3;
-  display: grid; grid-template-columns: repeat(5, 1fr);
-  align-items: center; padding: 6px 4px 8px;
+  display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, .9fr) auto minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.2fr);
+  align-items: center; gap: 2px; padding: 6px 4px 8px;
 }
 .pb-mhead-item {
   display: flex; flex-direction: column; align-items: center; gap: 3px;
   color: #fff; padding: 2px 0; min-width: 0;
 }
 .pb-mhead-ico { display: grid; place-items: center; height: 24px; }
+.pb-mhead-deposit-ico {
+  width: 32px; height: 24px; border-radius: 7px;
+  background: var(--pb-yellow); color: #1a1208;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .28);
+}
+.pb-mhead-deposit .pb-mhead-lbl { color: var(--pb-yellow); font-weight: 800; }
 .pb-mhead-lbl {
   font-size: 10px; font-weight: 600; max-width: 100%;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
-.pb-mhead-logo { display: grid; place-items: center; }
+.pb-mhead-logo { display: grid; place-items: center; padding: 0 2px; }
 .pb-mhead-logo img {
-  width: 48px; height: 48px; border-radius: 11px; object-fit: cover;
+  width: 44px; height: 44px; border-radius: 10px; object-fit: cover;
   box-shadow: 0 2px 8px rgba(0, 0, 0, .3);
 }
 
