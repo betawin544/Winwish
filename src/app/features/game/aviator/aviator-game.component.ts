@@ -447,6 +447,10 @@ export class AviatorGameComponent implements OnInit, AfterViewInit, OnDestroy {
   private mpesaCheckoutRequestId: string = '';
 
   public currentUser = signal<User | null>(null);
+  public isAdmin = computed(() => {
+    const role = String(this.currentUser()?.role || '').toLowerCase().replace('_', '');
+    return role === 'admin' || role === 'superadmin';
+  });
 
   // Live Winbet chat. The server enforces this threshold; the computed value
   // keeps the composer in sync with wallet updates before the next chat event.
@@ -2981,6 +2985,11 @@ export class AviatorGameComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public goBack() {
     this.router.navigate(['/bets']);
+  }
+
+  public goToAdmin() {
+    this.showProfileDropdown.set(false);
+    this.router.navigate(['/admin']);
   }
 
 

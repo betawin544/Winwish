@@ -30,6 +30,8 @@
 .settings-switch i { position: absolute; left: 5px; top: 4.5px; width: 18px; height: 18px; border-radius: 50%; background: #2c2d2f; }
 .settings-switch.on i { left: 18px; background: #a8a8a8; }
 .settings-menu-separator { height: 23px; background: #2b2c2f; }
+.settings-admin-row { color: #f6c945; font-weight: 600; }
+.settings-admin-row .settings-menu-icon { stroke: #f6c945; }
 .settings-room-row { border-bottom: 0; }
 .settings-room-row .settings-menu-icon { width: 22px; height: 22px; flex-basis: 22px; margin-left: -2px; margin-right: -2px; }
 .settings-home-btn {

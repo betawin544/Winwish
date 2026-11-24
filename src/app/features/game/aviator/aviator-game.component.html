@@ -72,6 +72,10 @@
             <span class="settings-switch" [class.on]="gamePreferenceEnabled(preference.id)" aria-hidden="true"><i></i></span>
           </button>
           <div class="settings-menu-separator" aria-hidden="true"></div>
+          <button *ngIf="isAdmin()" type="button" class="settings-menu-row settings-admin-row" (click)="goToAdmin()">
+            <svg class="settings-menu-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+            <span>Admin Panel</span>
+          </button>
           <button *ngFor="let item of gameMenuItems" type="button" class="settings-menu-row" (click)="openGameMenuPage(item.id)">
             <svg class="settings-menu-icon" viewBox="0 0 24 24" aria-hidden="true"><path [attr.d]="item.icon"/></svg>
             <span>{{ item.label }}</span>
