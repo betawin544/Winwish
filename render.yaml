@@ -1,0 +1,50 @@
+# Render Blueprint for Winbet: the Express + Socket.IO game server.
+# The Angular front end is hosted on Cloudflare Pages (https://winbet.site).
+# Deploy with: Render Dashboard -> New -> Blueprint -> pick this repo.
+# Values marked "sync: false" are secrets: Render prompts for them on first
+# deploy and never stores them in this file.
+services:
+  # ── Backend: API + game socket ────────────────────────────────────────────
+  - type: web
+    name: winbet-api
+    runtime: node
+    plan: starter          # Do NOT use "free": free instances sleep, which drops
+                           # the Socket.IO game loop and every live bet with it.
+    region: frankfurt      # Lowest latency Render region for Kenya.
+    rootDir: backend
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: MONGODB_DB_NAME
+        value: winbet
+      - key: ALLOWED_ORIGINS
+        value: https://winbet.site,https://www.winbet.site,https://api.winbet.site
+      - key: NEXUSPAY_BASE_URL
+        value: https://makamescopay.com/api
+      - key: NEXUSPAY_PENDING_PAYMENT_EXPIRY_MS
+        value: "300000"
+      - key: MIN_DEPOSIT_AMOUNT
+        value: "999"
+      # ---- secrets: entered in the Render dashboard, never committed ----
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: NEXUSPAY_API_KEY
+        sync: false
+      - key: NEXUSPAY_SETTLEMENT_ACCOUNT_ID
+        sync: false
+      - key: NEXUSPAY_TENANT_CODE
+        sync: false
+      - key: SEED_ADMIN_PHONE
+        sync: false
+      - key: SEED_ADMIN_PASSWORD
+        sync: false
+      - key: SEED_ADMIN_USERNAME
+        sync: false
+      - key: SEED_ADMIN_EMAIL
+        sync: false

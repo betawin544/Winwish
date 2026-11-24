@@ -1,0 +1,8 @@
+{
+  // Cloudflare Pages configuration for the Winbet Angular front end (winbet.site).
+  // Build command: npm run build
+  // Build output directory: dist/frontend/browser
+  "name": "winbet",
+  "compatibility_date": "2026-11-24",
+  "pages_build_output_dir": "./dist/frontend/browser"
+}

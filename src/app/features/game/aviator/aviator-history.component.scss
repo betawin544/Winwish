@@ -1,0 +1,87 @@
+/* My Bet History: dimensions and colors from the supplied 607 × 553 capture. */
+.bet-history-backdrop {
+  z-index: 2000; padding: 12px; background: rgba(0, 0, 0, .48); backdrop-filter: none;
+}
+.modal-card.bet-history-card {
+  --history-columns: minmax(0, 1fr) 60px 62px minmax(0, 1.2fr) 44px;
+  display: flex; flex-direction: column; width: 563px; max-width: 100%;
+  max-height: calc(100dvh - 24px); padding: 0; overflow: hidden;
+  border: 0; border-radius: 7px; background: #1a1a1a; box-shadow: none;
+  color: #eee; font: 400 16px/1.2 Arial, Helvetica, sans-serif; animation: none;
+}
+.bet-history-header {
+  display: flex; align-items: center; justify-content: space-between;
+  flex: 0 0 39px; height: 39px; margin: 0; padding: 0 11px; background: #2c2d30;
+}
+.bet-history-title { margin: 0; color: #eee; font: 400 18px/22px Arial, sans-serif; letter-spacing: 0; }
+.bet-history-close-btn {
+  display: grid; place-items: center; width: 24px; height: 24px; padding: 0;
+  border: 0; background: none; color: #7d8991; cursor: pointer;
+  svg { width: 24px; height: 24px; stroke-width: 4; stroke-linecap: butt; }
+  &:hover { color: #eee; }
+}
+.bet-history-table-header {
+  display: grid; grid-template-columns: var(--history-columns); align-items: center;
+  flex: 0 0 39px; height: 39px; margin: 0; padding: 12px 12px 0;
+  border: 0; color: #7b7b7b; font: 400 12px/14px Arial, sans-serif;
+  .bth-bet { text-align: right; padding-right: 10px; }
+  .bth-x { padding-left: 2px; }
+  .bth-cashout { text-align: right; padding-right: 6px; white-space: nowrap; }
+}
+.bet-history-list {
+  display: flex; flex-direction: column; flex: 0 1 auto; min-height: 0;
+  max-height: 403.5px; gap: 1.5px; padding: 0 6px; overflow-y: auto;
+  overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #393a3d transparent;
+}
+.bet-history-row {
+  display: grid; grid-template-columns: var(--history-columns); align-items: center;
+  flex: 0 0 39px; height: 39px; min-height: 39px; gap: 0; padding: 0 5px;
+  border: 1px solid transparent; border-radius: 10px; background: #101112;
+  .btr-date { display: flex; flex-direction: column; min-width: 0; color: #bcbec4; }
+  .btr-time, .btr-day { color: inherit; font: 400 14px/13px Arial, sans-serif; white-space: nowrap; }
+  .btr-bet { min-width: 0; padding-right: 10px; color: #808080; text-align: right; font: 400 16px/20px Arial, sans-serif; }
+  .btr-multiplier { padding-left: 2px; }
+  .btr-mult-pill {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 26px; padding: 0 6px; border-radius: 14px; background: #080b0c;
+    color: #11b5f0; font: 700 14px/18px Arial, sans-serif; letter-spacing: 0;
+    &.mid { color: #913df1; }
+    &.high { color: #c414b7; }
+  }
+  .btr-cashout { min-width: 0; padding-right: 6px; text-align: right; }
+  .btr-win-amount { color: #eee; font: 400 16px/20px Arial, sans-serif; }
+  .btr-actions { display: flex; align-items: center; justify-content: flex-end; gap: 2px; }
+  .btr-icon-btn {
+    display: grid; place-items: center; width: 20px; height: 26px; padding: 0;
+    border: 0; background: none; cursor: pointer;
+    svg { width: 18px; height: 18px; stroke-width: 1; }
+    &:hover { opacity: .8; }
+  }
+  .btr-shield-btn { color: #4e9800; }
+  .btr-chat-btn { color: #9ca3aa; svg { width: 20px; } }
+  &.won {
+    background: #123405; border-color: #427f00;
+    .btr-bet { color: #eee; }
+    .btr-mult-pill { background: #091a02; }
+  }
+}
+.bet-history-footer {
+  display: flex; justify-content: center; flex: 0 0 auto; margin: 0; padding: 17px 0 7px;
+}
+.btn-load-more-history {
+  width: 127px; height: 44px; padding: 0; border: 1px solid #363639; border-radius: 24px;
+  background: #252528; color: #86898f; font: 400 16px/20px Arial, sans-serif; cursor: pointer;
+  &:hover { background: #2d2d30; color: #eee; }
+}
+.bet-history-card button:focus-visible { outline: 2px solid #5b9d3e; outline-offset: -2px; }
+@media (max-width: 360px) {
+  .modal-card.bet-history-card { --history-columns: minmax(70px, 1fr) 48px 54px minmax(0, 1.2fr) 38px; }
+  .bet-history-row {
+    .btr-bet, .btr-win-amount { font-size: 14px; }
+    .btr-time, .btr-day { font-size: 12px; }
+    .btr-mult-pill { font-size: 12px; padding: 0 4px; }
+    .btr-actions { gap: 0; }
+    .btr-icon-btn { width: 19px; }
+  }
+  .bet-history-table-header .bth-cashout { font-size: 10px; }
+}

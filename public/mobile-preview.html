@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Winbet mobile preview</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #160b06; color: #fff; font: 14px Arial, sans-serif; }
+    header { display: flex; justify-content: space-between; align-items: center; max-width: 574px; margin: auto; padding: 12px; }
+    a { color: #e6b87d; }
+    iframe { display: block; width: min(100%, 574px); height: calc(100dvh - 42px); margin: auto; border: 0; background: #000; }
+    @media (min-width: 901px) {
+      iframe { width: min(574px, calc((100dvh - 42px) * .475954)); height: min(1206px, calc(100dvh - 42px)); }
+    }
+  </style>
+</head>
+<body>
+  <header><span>Mobile preview</span><a href="/play">Open game</a></header>
+  <iframe src="/play" title="Winbet mobile game" allow="fullscreen"></iframe>
+  <script>
+    const preview = new URLSearchParams(location.search).get('preview');
+    if (['takeoff', 'flight-blue', 'flight-purple', 'flight-mobile', 'waiting', 'crashed', 'loading', 'offline', 'connection'].includes(preview)) {
+      document.querySelector('iframe').src = `/play?preview=${encodeURIComponent(preview)}`;
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<aside *ngIf="showInstallPrompt && !isStandalone" class="install-prompt" role="dialog" aria-label="Install Winbet app">
+  <img src="/assets/icons/winbet-mark.png" alt="Winbet app icon" style="width:48px;height:48px;border-radius:12px;object-fit:cover;">
+  <div class="install-copy">
+    <strong>Install Winbet</strong>
+    <span>Keep Winbet on your home screen for faster access.</span>
+    <p *ngIf="installHelpVisible">In Chrome or Brave, open the browser menu and choose <b>Install app</b> or <b>Add to Home screen</b>.</p>
+  </div>
+  <button type="button" class="install-action" (click)="installApp()">Install app</button>
+  <button type="button" class="install-dismiss" aria-label="Close install prompt" (click)="dismissInstallPrompt()">×</button>
+</aside>
+<app-withdrawal-notice></app-withdrawal-notice>
+<router-outlet></router-outlet>
+<!-- Winbet Themed Session/Logged Out Notification -->
+<div *ngIf="auth.sessionNotice() as notice" class="winbet-notice-overlay" role="alert" aria-live="assertive">
+  <div class="winbet-notice-card">
+    <div class="winbet-notice-head">
+      <img src="/assets/icons/winbet-mark.png" alt="Winbet" class="winbet-notice-mark">
+      <div class="winbet-notice-brand">
+        <span class="winbet-brand-txt">Win<span class="winbet-brand-gold">bet</span></span>
+        <span class="winbet-notice-pill">Notice</span>
+      </div>
+      <button type="button" class="winbet-notice-close" (click)="auth.dismissSessionNotice()" aria-label="Close">×</button>
+    </div>
+    <div class="winbet-notice-body">
+      <div class="winbet-notice-icon-circle">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#ffd026" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+      </div>
+      <div class="winbet-notice-content">
+        <h4 class="winbet-notice-title">{{ notice.title }}</h4>
+        <p class="winbet-notice-msg">{{ notice.message }}</p>
+      </div>
+    </div>
+    <div class="winbet-notice-actions">
+      <button type="button" class="winbet-notice-btn" (click)="auth.dismissSessionNotice()">OK</button>
+    </div>
+  </div>
+</div>

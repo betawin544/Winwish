@@ -1,0 +1,841 @@
+<div class="pb-shell">
+
+  <!-- Tap-anywhere backdrop for mobile menu & profile dropdown -->
+  <div class="pb-backdrop" *ngIf="showProfileMenu() || mobileMenuOpen()" (click)="closeAllMenus()"></div>
+
+  <!-- ══ HEADER ════════════════════════════════════════════════════════════ -->
+  <header class="pb-header" [class.pb-menu-open]="showProfileMenu() || mobileMenuOpen()">
+
+    <!-- phone header: menu / search / logo / my bets / profile -->
+    <div class="pb-mhead phone-only">
+      <button type="button" class="pb-mhead-item" (click)="toggleMobileMenu()" aria-label="Menu">
+        <span class="pb-mhead-ico">
+          <svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor"
+               stroke-width="2.2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+        </span>
+        <span class="pb-mhead-lbl">Menu</span>
+      </button>
+
+      <button type="button" class="pb-mhead-item" (click)="toggleSearch()" aria-label="Search">
+        <span class="pb-mhead-ico">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+               stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        </span>
+        <span class="pb-mhead-lbl">Search</span>
+      </button>
+
+      <button type="button" class="pb-mhead-logo" (click)="setNavTab('sports')" aria-label="Winbet home">
+        <img src="/assets/icons/winbet-mark.png" alt="Winbet">
+      </button>
+
+      <button type="button" class="pb-mhead-item" (click)="openMyBetsModal()" aria-label="My bets">
+        <span class="pb-mhead-ico">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+               stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 6h11M3 12h11M3 18h7"/><path d="m16 16 2.5 2.5L23 14"/></svg>
+        </span>
+        <span class="pb-mhead-lbl">My Bets</span>
+      </button>
+
+      <button type="button" class="pb-mhead-item pb-mhead-balance" [class.is-guest]="!isAuthenticated"
+              (click)="isAuthenticated ? toggleProfileMenu() : goToLogin()"
+              aria-label="Account">
+        <span class="pb-mhead-ico">
+          <svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.9">
+            <circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c0-4.1 3.4-6.6 7.5-6.6s7.5 2.5 7.5 6.6"/></svg>
+        </span>
+        <span class="pb-mhead-lbl">{{ isAuthenticated ? (userBalance() | number:'1.2-2') + '/-' : 'Log in' }}</span>
+      </button>
+
+      <div class="pb-profile-menu pb-profile-menu-m" *ngIf="showProfileMenu() && isAuthenticated">
+        <div class="pb-profile-head">
+          <span class="pb-avatar lg">{{ userAvatarLetter() }}</span>
+          <div class="pb-profile-head-info">
+            <strong class="pb-profile-username">{{ userDisplayName() }}</strong>
+            <small class="pb-profile-balance">KSh {{ userBalance() | number:'1.2-2' }}</small>
+          </div>
+        </div>
+        <div class="pb-profile-quick-actions">
+          <button type="button" class="pb-profile-action-btn deposit" (click)="openDeposit()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+            <span>Deposit</span>
+          </button>
+          <button type="button" class="pb-profile-action-btn withdraw" (click)="openWithdraw()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14"/></svg>
+            <span>Withdraw</span>
+          </button>
+        </div>
+        <div class="pb-profile-links">
+          <button type="button" (click)="goToWallet()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M16 12h.01"/></svg>
+            <span>Wallet &amp; History</span>
+          </button>
+          <button type="button" (click)="openMyBetsModal()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span>My Bets</span>
+          </button>
+          <button type="button" (click)="openAccountModal()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Account Profile</span>
+          </button>
+          <button type="button" class="pb-link-aviator" (click)="goToAviator()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#e8202a" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            <span>Play Aviator</span>
+          </button>
+        </div>
+        <button type="button" class="pb-menu-logout" (click)="logout()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span>Log Out</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- desktop header -->
+    <div class="pb-header-inner laptop-only">
+      <button type="button" class="pb-brand" (click)="setNavTab('sports')" aria-label="Winbet home">
+        <img src="/assets/icons/winbet-mark.png" class="pb-brand-mark" alt="">
+        <span class="pb-brand-word">Win<span>bet</span></span>
+      </button>
+
+      <nav class="pb-mainnav" aria-label="Primary">
+        <button *ngFor="let item of mainNav" type="button"
+                class="pb-mainnav-item" [class.active]="activeNavTab() === item.id"
+                (click)="setNavTab(item.id)">{{ item.label }}</button>
+      </nav>
+
+      <div class="pb-header-right">
+        <button type="button" class="pb-search-btn" (click)="toggleSearch()"
+                [attr.aria-expanded]="searchOpen()" aria-label="Search matches">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"
+               stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <span>Search</span>
+        </button>
+
+        <button type="button" class="pb-deposit-btn" *ngIf="isAuthenticated" (click)="openDeposit()">DEPOSIT</button>
+
+        <div class="pb-balance" *ngIf="isAuthenticated" (click)="openAccountModal()">
+          <small>Balance</small>
+          <strong>KSh {{ userBalance() | number:'1.2-2' }}</strong>
+        </div>
+
+        <div class="pb-auth-group" *ngIf="!isAuthenticated">
+          <button type="button" class="pb-login" (click)="goToLogin()">LOG IN</button>
+          <button type="button" class="pb-signup" (click)="goToRegister()">SIGN UP</button>
+        </div>
+
+        <div class="pb-profile-wrap" *ngIf="isAuthenticated">
+          <button type="button" class="pb-profile-btn" (click)="toggleProfileMenu()" aria-label="Account menu">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9">
+              <circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+          </button>
+          <div class="pb-profile-menu" *ngIf="showProfileMenu()">
+            <div class="pb-profile-head">
+              <span class="pb-avatar lg">{{ userAvatarLetter() }}</span>
+              <div class="pb-profile-head-info">
+                <strong class="pb-profile-username">{{ userDisplayName() }}</strong>
+                <small class="pb-profile-balance">KSh {{ userBalance() | number:'1.2-2' }}</small>
+              </div>
+            </div>
+            <div class="pb-profile-quick-actions">
+              <button type="button" class="pb-profile-action-btn deposit" (click)="openDeposit()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+                <span>Deposit</span>
+              </button>
+              <button type="button" class="pb-profile-action-btn withdraw" (click)="openWithdraw()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14"/></svg>
+                <span>Withdraw</span>
+              </button>
+            </div>
+            <div class="pb-profile-links">
+              <button type="button" (click)="goToWallet()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M16 12h.01"/></svg>
+                <span>Wallet &amp; History</span>
+              </button>
+              <button type="button" (click)="openMyBetsModal()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <span>My Bets</span>
+              </button>
+              <button type="button" (click)="openAccountModal()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span>Account Profile</span>
+              </button>
+              <button type="button" class="pb-link-aviator" (click)="goToAviator()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#e8202a" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                <span>Play Aviator</span>
+              </button>
+            </div>
+            <button type="button" class="pb-menu-logout" (click)="logout()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              <span>Log Out</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- search drawer -->
+    <div class="pb-searchbar" *ngIf="searchOpen()">
+      <input type="text" [ngModel]="searchQuery()" (ngModelChange)="searchQuery.set($event)"
+             placeholder="Search teams, leagues or countries…" class="pb-search-input">
+      <button type="button" class="pb-search-clear" (click)="toggleSearch()">Close</button>
+    </div>
+
+    <!-- coloured game rail -->
+    <div class="pb-rail-wrap">
+      <div class="pb-rail" role="list">
+        <button *ngFor="let tile of gameTiles" type="button" role="listitem"
+                class="pb-tile" (click)="openGameTile(tile)"
+                [style.background]="'linear-gradient(160deg,' + tile.from + ',' + tile.to + ')'">
+          <span class="pb-tile-badge" *ngIf="tile.badge">{{ tile.badge }}</span>
+          <img class="pb-tile-icon" [src]="tile.icon" alt="" loading="lazy">
+          <span class="pb-tile-label">{{ tile.label }}</span>
+        </button>
+      </div>
+      <button type="button" class="pb-rail-more phone-only" (click)="toggleMobileMenu()" aria-label="More games">
+        <span class="pb-rail-dots">⋮</span>
+        <span class="pb-rail-more-lbl">More</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ══ MOBILE DRAWER ═════════════════════════════════════════════════════ -->
+  <div class="pb-drawer-overlay phone-only" *ngIf="mobileMenuOpen()" (click)="closeMobileMenu()">
+    <aside class="pb-drawer" aria-label="Menu" (click)="$event.stopPropagation()">
+      <div class="pb-drawer-top">
+        <div class="pb-drawer-brand">
+          <img src="/assets/icons/winbet-mark.png" alt="">
+          <span>Win<span>bet</span></span>
+        </div>
+        <button type="button" class="pb-drawer-close" aria-label="Close" (click)="closeMobileMenu()">&times;</button>
+      </div>
+
+      <div class="pb-drawer-player" *ngIf="isAuthenticated" (click)="openAccountModal()">
+        <span class="pb-avatar">{{ userAvatarLetter() }}</span>
+        <div>
+          <strong>{{ userDisplayName() }}</strong>
+          <small>KSh {{ userBalance() | number:'1.2-2' }}</small>
+        </div>
+        <span class="pb-chevron">›</span>
+      </div>
+
+      <div class="pb-drawer-tiles">
+        <button *ngFor="let tile of gameTiles" type="button" class="pb-drawer-tile"
+                (click)="openGameTile(tile)"
+                [style.background]="'linear-gradient(150deg,' + tile.from + ',' + tile.to + ')'">
+          <img [src]="tile.icon" alt="" loading="lazy">
+          <span>{{ tile.label }}</span>
+        </button>
+      </div>
+
+      <nav class="pb-drawer-nav" aria-label="Sections">
+        <button *ngFor="let item of mainNav" type="button"
+                [class.active]="activeNavTab() === item.id" (click)="setNavTab(item.id)">
+          {{ item.label }}
+        </button>
+      </nav>
+
+      <div class="pb-drawer-actions">
+        <button type="button" class="pb-drawer-deposit" (click)="openDeposit()">Deposit via M-Pesa</button>
+        <button type="button" (click)="openMyBetsModal()">My Bets &amp; Slips</button>
+        <button type="button" (click)="openAccountModal()">My Account</button>
+        <button type="button" class="pb-drawer-logout" *ngIf="isAuthenticated" (click)="logout()">Log Out</button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ══ BODY ══════════════════════════════════════════════════════════════ -->
+  <div class="pb-body">
+
+    <!-- ── LEFT SIDEBAR (desktop) ───────────────────────────────────────── -->
+    <aside class="pb-left laptop-only" aria-label="Leagues">
+      <div class="pb-quick-grid">
+        <button *ngFor="let tile of leftQuickTiles" type="button" class="pb-quick-tile"
+                (click)="openQuickTile(tile)" [attr.aria-label]="tile.label">
+          <img class="pb-quick-img" [src]="tile.image" [alt]="tile.label" loading="lazy">
+        </button>
+      </div>
+
+      <section class="pb-panel">
+        <button type="button" class="pb-panel-head" (click)="leaguesOpen.set(!leaguesOpen())"
+                [attr.aria-expanded]="leaguesOpen()">
+          <span>Top Leagues</span>
+          <span class="pb-panel-caret" [class.open]="leaguesOpen()">⌄</span>
+        </button>
+        <ul class="pb-league-list" *ngIf="leaguesOpen()">
+          <li *ngFor="let league of topLeagues">
+            <button type="button" [class.active]="activeLeague() === league.name"
+                    (click)="filterByLeague(league.name)">
+              <span class="pb-league-dot"></span>
+              <span class="pb-league-text">
+                <strong>{{ league.name }}</strong>
+                <small>{{ league.country }}</small>
+              </span>
+              <span class="pb-league-count">{{ league.count }}</span>
+            </button>
+          </li>
+        </ul>
+      </section>
+
+      <section class="pb-panel">
+        <button type="button" class="pb-panel-head dark" (click)="countriesOpen.set(!countriesOpen())"
+                [attr.aria-expanded]="countriesOpen()">
+          <span>All countries</span>
+          <span class="pb-panel-caret" [class.open]="countriesOpen()">⌄</span>
+        </button>
+        <ul class="pb-country-list" *ngIf="countriesOpen()">
+          <li *ngFor="let country of countries">
+            <button type="button" (click)="searchQuery.set(country.name); searchOpen.set(true)">
+              <span>{{ country.name }}</span>
+              <span class="pb-league-count">{{ country.count }}</span>
+            </button>
+          </li>
+        </ul>
+      </section>
+    </aside>
+
+    <!-- ── CENTER ───────────────────────────────────────────────────────── -->
+    <main class="pb-center">
+
+      <!-- promo banner -->
+      <section class="pb-promo">
+        <div class="pb-promo-track">
+          <button *ngFor="let promo of promoSlides" type="button" class="pb-promo-slide"
+                  (click)="openPromo(promo.action)">
+            <span class="pb-promo-tag">{{ promo.tag }}</span>
+            <strong class="pb-promo-title">{{ promo.title }}</strong>
+            <span class="pb-promo-cta">{{ promo.cta }} ›</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- aviator feature strip -->
+      <button type="button" class="pb-aviator-strip" (click)="goToAviator()">
+        <span class="pb-aviator-logo">
+          <img src="/assets/games/photos/aviator.jpg" alt="Aviator">
+        </span>
+        <span class="pb-aviator-copy">
+          <span class="pb-aviator-badges">
+            <span class="pb-live-dot"></span>
+            <span class="pb-aviator-fair">PROVABLY FAIR</span>
+            <span class="pb-aviator-x">UP TO 10,000x</span>
+          </span>
+          <strong class="pb-aviator-title">Aviator</strong>
+          <small class="pb-aviator-tag">Cash out before the plane flies away.</small>
+        </span>
+        <span class="pb-aviator-play">Play Now ›</span>
+      </button>
+
+      <!-- casino: content tabs + chips + cards -->
+      <section class="pb-card">
+        <div class="pb-content-tabs">
+          <button *ngFor="let tab of contentTabs" type="button"
+                  class="pb-content-tab" [class.active]="activeContentTab() === tab.id"
+                  (click)="setContentTab(tab.id)">
+            <span class="pb-flame" *ngIf="tab.flame">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="#f97316"><path d="M12 2c3 4 5 6 5 9a5 5 0 0 1-10 0c0-3 2-4 5-9z"/></svg>
+            </span>{{ tab.label }}
+          </button>
+        </div>
+
+        <div class="pb-card-tabs">
+          <button *ngFor="let tab of casinoTabs" type="button"
+                  class="pb-chip" [class.active]="activeCasinoTab() === tab.id"
+                  (click)="activeCasinoTab.set(tab.id)">
+            {{ tab.label }}<span class="pb-chip-count">{{ casinoTabCount(tab.id) }}</span>
+          </button>
+        </div>
+
+        <div class="pb-game-rail-container">
+          <div class="pb-game-grid">
+            <button *ngFor="let game of visibleCasinoGames()" type="button" class="pb-game-card"
+                    [class.has-photo]="game.photo"
+                    (click)="openCasinoGame(game)"
+                    [style.background]="game.photo ? '#000000' : 'linear-gradient(155deg,' + game.from + ',' + game.to + ')'">
+              <ng-container *ngIf="game.photo; else vectorCard">
+                <img class="pb-game-photo" [src]="game.photo" [alt]="game.name" loading="lazy">
+                <span class="pb-game-play-hover">Play</span>
+              </ng-container>
+              <ng-template #vectorCard>
+                <span class="pb-game-live" *ngIf="game.live">LIVE</span>
+                <img class="pb-game-icon" [src]="game.icon" alt="" loading="lazy">
+                <strong class="pb-game-name">{{ game.name }}</strong>
+                <small class="pb-game-tag">{{ game.tagline }}</small>
+                <span class="pb-game-play">Play ›</span>
+              </ng-template>
+            </button>
+            <button class="pb-game-next" type="button" aria-label="More games" (click)="setContentTab('crash')">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="3"><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- app install strip -->
+      <div class="pb-appstrip">
+        <span>Install Winbet on your phone, get <strong>KSh 50</strong> bonus!</span>
+        <button type="button" (click)="promoteApp()">Add to Home</button>
+      </div>
+
+      <!-- quick sports strip -->
+      <div class="pb-quickstrip">
+        <button *ngFor="let item of quickSports" type="button" class="pb-quickstrip-item"
+                (click)="openQuickSport(item)">
+          <img [src]="item.icon" alt="" loading="lazy">
+          <span class="pb-quickstrip-lbl">{{ item.label }}</span>
+          <span class="pb-quickstrip-count">{{ item.count }}</span>
+        </button>
+      </div>
+
+      <!-- jackpot strip -->
+      <button type="button" class="pb-jackpot" (click)="setNavTab('jackpots')">
+        <span class="pb-jackpot-label">Aviator Weekly</span>
+        <strong class="pb-jackpot-amount">KES 300,000 CASH JACKPOT</strong>
+        <span class="pb-jackpot-cta">Enter ›</span>
+      </button>
+
+      <!-- sports board -->
+      <section class="pb-card">
+        <div class="pb-sports-head">
+          <h2 class="pb-sports-title">Sports</h2>
+          <button type="button" class="pb-sports-link" (click)="filterByLeague('Premier League')">
+            EPL<span class="pb-dot-red"></span>
+          </button>
+          <button type="button" class="pb-sports-link" (click)="setNavTab('winleague')">
+            WinbetLeague<span class="pb-dot-red"></span>
+          </button>
+          <button type="button" class="pb-refresh" (click)="refreshBoard()" aria-label="Refresh odds">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                 stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 11A8 8 0 0 0 6.3 5.7L4 8"/><path d="M4 4v4h4"/>
+              <path d="M4 13a8 8 0 0 0 13.7 5.3L20 16"/><path d="M20 20v-4h-4"/></svg>
+          </button>
+        </div>
+
+        <div class="pb-day-tabs">
+          <span class="pb-day-hrs">Hrs ⌄</span>
+          <button *ngFor="let day of dayTabs" type="button"
+                  class="pb-day-tab" [class.active]="activeDay() === day.id"
+                  (click)="setDay(day.id)">{{ day.label }}</button>
+          <button type="button" class="pb-day-tab" [class.active]="activeFilter() === 'live'"
+                  (click)="setNavTab('live')">
+            <span class="pb-live-dot"></span>LIVE {{ liveCount() }}
+          </button>
+        </div>
+
+        <div class="pb-sport-tabs">
+          <button *ngFor="let sport of sportsTabs" type="button"
+                  class="pb-sport-tab" [class.active]="selectedSport() === sport.id"
+                  (click)="selectSport(sport.id)">
+            {{ sport.name }}<span class="pb-sport-count">{{ sport.count }}</span>
+          </button>
+        </div>
+
+        <div class="pb-board-controls">
+          <div class="pb-select-wrap">
+            <select class="pb-select" [ngModel]="sortByLeague() ? 'league' : 'time'"
+                    (ngModelChange)="sortByLeague.set($event === 'league')">
+              <option value="time">Sort by time</option>
+              <option value="league">Sort by league</option>
+            </select>
+          </div>
+          <div class="pb-select-wrap">
+            <select class="pb-select" [ngModel]="marketType()" (ngModelChange)="setMarket($event)">
+              <option *ngFor="let market of marketTabs" [value]="market.id">{{ market.label }}</option>
+            </select>
+          </div>
+          <button type="button" class="pb-2up" [class.on]="show2upTip()" (click)="show2upTip.set(!show2upTip())">2up</button>
+          <button type="button" class="pb-control pb-clear" (click)="clearFilters()">Clear</button>
+        </div>
+
+        <div class="pb-2up-tip" *ngIf="show2upTip()">
+          Win if your chosen team leads by 2 goals at any point, regardless of the final outcome.
+          <button type="button" (click)="show2upTip.set(false)">Got it</button>
+        </div>
+
+        <div class="pb-active-filters" *ngIf="activeLeague() || searchQuery() || activeFilter() !== 'all'">
+          <span class="pb-filter-pill" *ngIf="activeLeague()">
+            {{ activeLeague() }}
+            <button type="button" (click)="activeLeague.set(null)" aria-label="Clear league">×</button>
+          </span>
+          <span class="pb-filter-pill" *ngIf="activeFilter() !== 'all'">
+            {{ activeFilter() | titlecase }}
+            <button type="button" (click)="activeFilter.set('all')" aria-label="Clear state">×</button>
+          </span>
+          <span class="pb-filter-pill" *ngIf="searchQuery()">
+            “{{ searchQuery() }}”
+            <button type="button" (click)="searchQuery.set('')" aria-label="Clear search">×</button>
+          </span>
+        </div>
+
+        <div class="pb-odds-header">
+          <span class="pb-oh-match">{{ visibleMatches().length }} matches</span>
+          <span class="pb-oh-cols">
+            <span *ngFor="let column of marketColumns()">{{ column.label }}</span>
+          </span>
+        </div>
+
+        <div class="pb-match-list">
+          <ng-container *ngFor="let group of groupedMatches()">
+            <div class="pb-group-head">{{ group.label }} ({{ group.matches.length }})</div>
+
+            <article class="pb-match" *ngFor="let game of group.matches">
+              <div class="pb-match-info">
+                <div class="pb-match-meta">
+                  <span class="pb-match-time" [class.live]="game.state === 'live'">
+                    <span class="pb-live-dot" *ngIf="game.state === 'live'"></span>{{ game.time }}
+                  </span>
+                  <span class="pb-match-markets">+{{ game.marketsCount }} markets</span>
+                </div>
+                <div class="pb-match-teams">
+                  <span>{{ game.home }}</span>
+                  <span class="pb-vs">v</span>
+                  <span>{{ game.away }}</span>
+                </div>
+              </div>
+
+              <div class="pb-match-odds" [class.two-col]="marketColumns().length === 2">
+                <button *ngFor="let column of marketColumns()" type="button" class="pb-odd"
+                        [class.selected]="isSelected(game.id, column.key)"
+                        (click)="toggleSelection(game, column.key)">
+                  <span class="pb-odd-label">{{ column.label }}</span>
+                  <strong class="pb-odd-value">{{ oddsFor(game, column.key) | number:'1.2-2' }}</strong>
+                </button>
+              </div>
+            </article>
+          </ng-container>
+
+          <div class="pb-empty" *ngIf="!visibleMatches().length">
+            <strong>No matches match these filters</strong>
+            <p>Try a different day, league or search term.</p>
+            <button type="button" class="pb-empty-btn" (click)="clearFilters()">Clear filters</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- footer -->
+      <footer class="pb-footer">
+        <div class="pb-footer-brand">
+          <img src="/assets/icons/winbet-mark.png" alt="">
+          <span>Win<span>bet</span></span>
+        </div>
+        <div class="pb-footer-grid">
+          <div>
+            <h3>Contact us</h3>
+            <a href="tel:0747112112">0747 112 112</a>
+            <a href="mailto:customercare@winbet.site">customercare&#64;winbet.site</a>
+          </div>
+          <div>
+            <h3>Support</h3>
+            <a href="#">FAQ &amp; Help Centre</a>
+            <a href="#">How to play Aviator</a>
+            <a href="#">Terms and Conditions</a>
+            <a href="#">Responsible Gaming</a>
+          </div>
+          <div>
+            <h3>Legal</h3>
+            <p>You must be 18 years or older to register or play at Winbet.</p>
+            <p>Gambling can be addictive. Play responsibly.</p>
+            <span class="pb-licence">BCLB-BK-0001257</span>
+          </div>
+        </div>
+      </footer>
+    </main>
+
+    <!-- ── RIGHT BETSLIP (desktop) ──────────────────────────────────────── -->
+    <aside class="pb-right laptop-only" aria-label="Bet slip">
+      <div class="pb-slip">
+        <div class="pb-slip-tabs">
+          <button type="button" class="active">
+            <span class="pb-slip-count">{{ selections().length }}</span> Betslip
+          </button>
+          <button type="button" (click)="openMyBetsModal()">My bets</button>
+        </div>
+        <ng-container *ngTemplateOutlet="slipBody"></ng-container>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ══ MOBILE BETSLIP SHEET ══════════════════════════════════════════════ -->
+  <div class="pb-sheet-overlay phone-only" *ngIf="betslipSheetOpen()" (click)="betslipSheetOpen.set(false)">
+    <section class="pb-sheet" (click)="$event.stopPropagation()" role="dialog" aria-label="Bet slip">
+      <div class="pb-sheet-head">
+        <strong>Betslip ({{ selections().length }})</strong>
+        <button type="button" (click)="betslipSheetOpen.set(false)" aria-label="Close">&times;</button>
+      </div>
+      <div class="pb-slip">
+        <ng-container *ngTemplateOutlet="slipBody"></ng-container>
+      </div>
+    </section>
+  </div>
+
+  <!-- shared slip body -->
+  <ng-template #slipBody>
+    <div class="pb-slip-mode">
+      <button type="button" [class.on]="slipMode() === 'real'" (click)="slipMode.set('real')">REAL</button>
+      <button type="button" [class.on]="slipMode() === 'simulate'" (click)="slipMode.set('simulate')">SIMULATE</button>
+      <button type="button" class="pb-slip-remove" (click)="clearSlip()" *ngIf="selections().length">× Remove all</button>
+    </div>
+
+    <div class="pb-slip-body">
+      <div class="pb-slip-empty" *ngIf="!selections().length">
+        <strong>No selections</strong>
+        <p>Add match selections by clicking the odds on any match.</p>
+      </div>
+
+      <div *ngIf="selections().length">
+        <article class="pb-slip-item" *ngFor="let item of selections()">
+          <button type="button" class="pb-slip-x" (click)="removeSelection(item)" aria-label="Remove">×</button>
+          <div class="pb-slip-match">{{ item.matchLabel }}</div>
+          <div class="pb-slip-pick">
+            <span><small>{{ item.marketLabel }}</small>{{ item.outcomeLabel }}</span>
+            <strong>{{ item.odds | number:'1.2-2' }}</strong>
+          </div>
+        </article>
+
+        <label class="pb-stake">
+          <span>Stake</span>
+          <div class="pb-stake-box">
+            <small>KES</small>
+            <input type="number" min="10" [(ngModel)]="stake">
+          </div>
+        </label>
+
+        <div class="pb-slip-totals">
+          <div><span>Total odds</span><strong>{{ combinedOdds() | number:'1.2-2' }}</strong></div>
+          <div><span>Possible win</span><strong class="pb-win">KES {{ potentialReturn() | number:'1.2-2' }}</strong></div>
+        </div>
+
+        <button type="button" class="pb-place-btn" (click)="placeBet()">
+          {{ slipMode() === 'simulate' ? 'Simulate bet' : 'Place bet' }}
+        </button>
+        <button type="button" class="pb-share-btn" (click)="shareSlip()">Share booking code</button>
+      </div>
+    </div>
+
+    <div class="pb-booking">
+      <p>Have a booking code? Enter it here.</p>
+      <div class="pb-booking-row">
+        <input type="text" [(ngModel)]="betslipCode" placeholder="Booking code">
+        <button type="button" (click)="loadBetslipByCode()">Load</button>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- ══ TOAST ═════════════════════════════════════════════════════════════ -->
+  <div class="pb-toast" *ngIf="toast()" role="status">{{ toast() }}</div>
+
+  <!-- ══ MY BETS MODAL ═════════════════════════════════════════════════════ -->
+  <div class="pb-modal-backdrop" *ngIf="showMyBetsModal()" (click)="closeMyBetsModal()">
+    <section class="pb-modal" role="dialog" aria-modal="true" aria-label="My Bets" (click)="$event.stopPropagation()">
+      <div class="pb-modal-head">
+        <h2>My Bets</h2>
+        <button type="button" class="pb-modal-close" (click)="closeMyBetsModal()">&times;</button>
+      </div>
+      <div class="pb-modal-tabs">
+        <button type="button" [class.active]="myBetsTab() === 'active'" (click)="myBetsTab.set('active')">Active (0)</button>
+        <button type="button" [class.active]="myBetsTab() === 'settled'" (click)="myBetsTab.set('settled')">Settled (0)</button>
+      </div>
+      <div class="pb-modal-body">
+        <div class="pb-empty">
+          <strong>No {{ myBetsTab() }} bets</strong>
+          <p>Select odds from the board to place your first bet.</p>
+          <button type="button" class="pb-empty-btn" (click)="closeMyBetsModal(); setNavTab('sports')">Explore matches</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ══ ACCOUNT MODAL ═════════════════════════════════════════════════════ -->
+  <div class="pb-modal-backdrop" *ngIf="showAccountModal()" (click)="closeAccountModal()">
+    <section class="pb-modal" role="dialog" aria-modal="true" aria-label="My Account" (click)="$event.stopPropagation()">
+      <div class="pb-modal-head">
+        <h2>My Account</h2>
+        <button type="button" class="pb-modal-close" (click)="closeAccountModal()">&times;</button>
+      </div>
+      <div class="pb-modal-body">
+        <div class="pb-account-card">
+          <span class="pb-avatar big">{{ userAvatarLetter() }}</span>
+          <div>
+            <strong>{{ userDisplayName() }}</strong>
+            <span *ngIf="currentUser()?.phone_number">{{ currentUser()?.phone_number }}</span>
+            <span class="pb-account-bal">KSh {{ userBalance() | number:'1.2-2' }}</span>
+          </div>
+        </div>
+        <div class="pb-account-actions">
+          <button type="button" class="primary" (click)="closeAccountModal(); openDeposit()">Deposit (M-Pesa STK)</button>
+          <button type="button" (click)="closeAccountModal(); goToWallet()">Wallet &amp; Withdrawals <span>›</span></button>
+          <button type="button" (click)="closeAccountModal(); openMyBetsModal()">Betting History <span>›</span></button>
+          <button type="button" class="danger" *ngIf="isAuthenticated" (click)="closeAccountModal(); logout()">Log Out <span>›</span></button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ══ IN-PAGE DEPOSIT MODAL ═══════════════════════════════════════════ -->
+  <!-- ══ WITHDRAW MODAL ════════════════════════════════════════════════════ -->
+  <div class="pb-modal-backdrop" *ngIf="showWithdrawModal()" (click)="closeWithdrawModal()">
+    <section class="pb-modal pb-deposit-modal" role="dialog" aria-modal="true" aria-label="Withdraw to M-Pesa" (click)="$event.stopPropagation()">
+      <div class="pb-modal-head pb-withdraw-modal-head">
+        <div class="pb-deposit-title-wrap">
+          <h2>Withdraw to M-PESA</h2>
+          <span class="pb-withdraw-badge">Balance KSh {{ userBalance() | number:'1.2-2' }}</span>
+        </div>
+        <button type="button" class="pb-modal-close" (click)="closeWithdrawModal()">&times;</button>
+      </div>
+      <div class="pb-modal-body pb-deposit-modal-body">
+
+        <div class="pb-deposit-presets">
+          <button type="button" class="pb-preset-pill" (click)="setWithdrawVal(200)">200</button>
+          <button type="button" class="pb-preset-pill" (click)="addWithdrawVal(500)">+500</button>
+          <button type="button" class="pb-preset-pill" (click)="addWithdrawVal(1000)">+1,000</button>
+          <button type="button" class="pb-preset-pill" (click)="setWithdrawVal(userBalance())">All</button>
+        </div>
+
+        <div class="pb-form-group">
+          <label for="pb-withdraw-phone">M-Pesa Phone Number</label>
+          <div class="pb-input-addon">
+            <span class="pb-addon-prefix">+254</span>
+            <input id="pb-withdraw-phone" type="tel" [(ngModel)]="withdrawPhone" placeholder="7XXXXXXXX"
+                   class="pb-text-input" autocomplete="tel" (ngModelChange)="cleanWithdrawPhone($event)">
+          </div>
+        </div>
+
+        <div class="pb-form-group">
+          <label for="pb-withdraw-amount">Withdrawal Amount (KES)</label>
+          <div class="pb-input-addon">
+            <span class="pb-addon-prefix">KES</span>
+            <input id="pb-withdraw-amount" type="number" [ngModel]="withdrawVal()" (ngModelChange)="setWithdrawVal($event)"
+                   min="200" max="300000" placeholder="200" class="pb-text-input">
+          </div>
+          <span class="pb-form-hint">Minimum KES 200, maximum KES 300,000 per day.</span>
+        </div>
+
+        <div *ngIf="withdrawStatusMsg()" class="pb-deposit-status"
+             [class.error]="withdrawStatusType() === 'error'"
+             [class.success]="withdrawStatusType() === 'success'"
+             [class.info]="withdrawStatusType() === 'info'">
+          {{ withdrawStatusMsg() }}
+        </div>
+
+        <button type="button" class="pb-withdraw-submit-btn" [disabled]="isWithdrawSubmitting()" (click)="submitWithdraw()">
+          {{ isWithdrawSubmitting() ? 'Submitting…' : ('Withdraw KES ' + (withdrawVal() | number)) }}
+        </button>
+
+        <div class="pb-deposit-alt-links">
+          <button type="button" class="pb-wallet-link" (click)="closeWithdrawModal(); goToWallet()">
+            <span>Open Wallet &amp; Transactions History</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ══ WITHDRAWAL POPUP (admin-authored copy) ════════════════════════════ -->
+  <div class="pb-modal-backdrop" *ngIf="withdrawPopupVisible()" (click)="closeWithdrawPopup()">
+    <section class="pb-withdraw-popup" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+      <div class="pb-withdraw-popup-icon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#6b381b" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      </div>
+      <h3 class="pb-withdraw-popup-title">{{ withdrawPopupTitle() }}</h3>
+      <p class="pb-withdraw-popup-body">{{ withdrawPopupMsg() }}</p>
+      <button type="button" class="pb-withdraw-popup-btn" (click)="closeWithdrawPopup()">OK, Got it</button>
+    </section>
+  </div>
+
+  <div class="pb-modal-backdrop" *ngIf="showDepositModal()" (click)="closeDepositModal()">
+    <section class="pb-modal pb-deposit-modal" role="dialog" aria-modal="true" aria-label="Deposit via M-Pesa" (click)="$event.stopPropagation()">
+      <div class="pb-modal-head pb-deposit-modal-head">
+        <div class="pb-deposit-title-wrap">
+          <h2>Deposit via M-PESA</h2>
+          <span class="pb-deposit-badge">⚡ Instant</span>
+        </div>
+        <button type="button" class="pb-modal-close" (click)="closeDepositModal()">&times;</button>
+      </div>
+      <div class="pb-modal-body pb-deposit-modal-body">
+        
+        <!-- Quick Amount Presets -->
+        <div class="pb-deposit-presets">
+          <button type="button" class="pb-preset-pill" (click)="setDepositVal(minDepositAmount())">+{{ minDepositAmount() | number }}</button>
+          <button type="button" class="pb-preset-pill" (click)="addDepositVal(2000)">+2,000</button>
+          <button type="button" class="pb-preset-pill" (click)="addDepositVal(5000)">+5,000</button>
+          <button type="button" class="pb-preset-pill" (click)="addDepositVal(10000)">+10,000</button>
+        </div>
+
+        <!-- Cooldown Warning Banner -->
+        <div *ngIf="depositCooldownSeconds() > 0" class="pb-deposit-cooldown">
+          <div class="pb-cooldown-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>Deposit Cooldown Active</span>
+          </div>
+          <p>Too many rapid deposit prompts. Please wait {{ formatCooldown(depositCooldownSeconds()) }} before trying again.</p>
+        </div>
+
+        <!-- Phone Number Field -->
+        <div class="pb-form-group">
+          <label for="pb-deposit-phone">M-Pesa Phone Number</label>
+          <div class="pb-input-addon">
+            <span class="pb-addon-prefix">+254</span>
+            <input id="pb-deposit-phone" type="tel" [(ngModel)]="depositPhone" placeholder="7XXXXXXXX" class="pb-text-input" autocomplete="tel" (ngModelChange)="cleanDepositPhone($event)">
+          </div>
+        </div>
+
+        <!-- Amount Field -->
+        <div class="pb-form-group">
+          <label for="pb-deposit-amount">Deposit Amount (KES)</label>
+          <div class="pb-input-addon">
+            <span class="pb-addon-prefix">KES</span>
+            <input id="pb-deposit-amount" type="number" [ngModel]="depositVal()" (ngModelChange)="setDepositVal($event)" [min]="minDepositAmount()" [placeholder]="minDepositAmount().toString()" class="pb-text-input">
+          </div>
+          <span class="pb-form-hint">Minimum deposit is KES {{ minDepositAmount() | number }}.</span>
+        </div>
+
+        <!-- Status Message -->
+        <div *ngIf="depositStatusMsg()" class="pb-deposit-status" [class.error]="depositStatusType() === 'error'" [class.success]="depositStatusType() === 'success'" [class.info]="depositStatusType() === 'info'">
+          {{ depositStatusMsg() }}
+        </div>
+
+        <!-- Submit Button -->
+        <button type="button" class="pb-deposit-submit-btn" [disabled]="isDepositSubmitting() || depositCooldownSeconds() > 0" (click)="submitDeposit()">
+          <ng-container *ngIf="depositCooldownSeconds() > 0">
+            Try again in {{ formatCooldown(depositCooldownSeconds()) }}
+          </ng-container>
+          <ng-container *ngIf="depositCooldownSeconds() <= 0">
+            {{ isDepositSubmitting() ? 'Sending STK Push...' : ('Deposit KES ' + (depositVal() | number)) }}
+          </ng-container>
+        </button>
+
+        <!-- Link to Full Wallet -->
+        <div class="pb-deposit-alt-links">
+          <button type="button" class="pb-wallet-link" (click)="closeDepositModal(); goToWallet()">
+            <span>Open Wallet &amp; Transactions History</span>
+            <span>›</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <!-- ══ BOTTOM NAV ════════════════════════════════════════════════════════ -->
+  <nav class="pb-bottomnav" aria-label="Quick navigation">
+    <button type="button" [class.active]="activeNavTab() === 'sports'" (click)="setNavTab('sports')">
+      <img class="pb-bn-icon" src="/assets/icons/games/home.svg" alt=""><span>Home</span>
+    </button>
+    <button type="button" [class.active]="activeNavTab() === 'live'" (click)="setNavTab('live')">
+      <img class="pb-bn-icon" src="/assets/icons/games/soccer.svg" alt=""><span>Sports</span>
+    </button>
+
+    <button type="button" class="pb-bn-slip" (click)="betslipSheetOpen.set(true)" aria-label="Open betslip">
+      <span class="pb-bn-slip-badge">{{ selections().length }}</span>
+      <span>Betslip</span>
+    </button>
+
+    <button type="button" (click)="setContentTab('crash')">
+      <img class="pb-bn-icon" src="/assets/icons/games/cards.svg" alt=""><span>Casino</span>
+    </button>
+    <button type="button" (click)="openMyBetsModal()">
+      <img class="pb-bn-icon" src="/assets/icons/games/trophy.svg" alt=""><span>My Bets</span>
+    </button>
+  </nav>
+</div>

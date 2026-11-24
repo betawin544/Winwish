@@ -1,0 +1,150 @@
+/* Game menu and room chooser, measured from the supplied captures. */
+.top-nav { z-index: 60; }
+.profile-dropdown-menu.aviator-settings-menu {
+  width: min(360px, calc(100vw - 20px)); max-height: calc(100dvh - 55px);
+  top: calc(100% + 8px); right: 0; padding: 0; overflow-y: auto;
+  border: 0; border-radius: 6px; background: #1b1c1c; box-shadow: none;
+  animation: none; font: 400 16px/1.2 Arial, Helvetica, sans-serif;
+  scrollbar-width: thin; scrollbar-color: #393a3d transparent;
+}
+.settings-user-header { display: flex; align-items: center; gap: 12px; height: 70px; padding: 0 11px; background: #2b2c2f; }
+.settings-avatar { width: 44px; height: 44px; flex: 0 0 44px; border-radius: 50%; object-fit: cover; }
+.settings-user-name { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #fff; font: 700 20px/24px Arial, sans-serif; }
+.change-avatar-btn {
+  display: flex; align-items: center; justify-content: center; gap: 5px; flex: 0 0 107px;
+  height: 46px; padding: 0 8px; border: 1px solid #414349; border-radius: 25px;
+  background: #242527; color: #858a90; font: 400 14px/16px Arial, sans-serif; text-align: left; cursor: pointer;
+}
+.change-avatar-btn svg { width: 24px; height: 24px; flex: 0 0 24px; fill: none; stroke: currentColor; stroke-width: .8; }
+.settings-menu-row {
+  display: flex; align-items: center; gap: 10px; width: 100%; height: 50px;
+  padding: 0 15px; border: 0; border-bottom: 1px solid #303234; border-radius: 0;
+  background: #1b1c1c; color: #eee; font: 400 16px/20px Arial, sans-serif;
+  text-align: left; cursor: pointer;
+}
+.settings-menu-row:hover { background: #242526; }
+.settings-menu-icon { width: 18px; height: 21px; flex: 0 0 18px; fill: none; stroke: #777f89; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.settings-preference { padding-right: 11px; }
+.settings-preference:last-of-type { border-bottom: 0; }
+.settings-switch { position: relative; width: 41px; height: 27px; flex: 0 0 41px; margin-left: auto; border-radius: 16px; background: #131414; }
+.settings-switch i { position: absolute; left: 5px; top: 4.5px; width: 18px; height: 18px; border-radius: 50%; background: #2c2d2f; }
+.settings-switch.on i { left: 18px; background: #a8a8a8; }
+.settings-menu-separator { height: 23px; background: #2b2c2f; }
+.settings-room-row { border-bottom: 0; }
+.settings-room-row .settings-menu-icon { width: 22px; height: 22px; flex-basis: 22px; margin-left: -2px; margin-right: -2px; }
+.settings-home-btn {
+  display: flex; align-items: center; justify-content: center; gap: 5px; width: 100%; height: 50px; padding: 0;
+  border: 0; background: #2b2c2f; color: #96999c; font: 400 14px/20px Arial, sans-serif; cursor: pointer;
+}
+.settings-home-btn svg { width: 18px; height: 18px; fill: none; stroke: #747d86; stroke-width: 1; }
+.aviator-settings-menu button:focus-visible { outline: 2px solid #5b9d3e; outline-offset: -3px; }
+
+.change-room-backdrop, .game-menu-page-backdrop { background: rgba(0, 0, 0, .48); backdrop-filter: none; }
+.modal-card.change-room-card {
+  width: min(563px, calc(100vw - 38px)); max-width: 563px; min-height: 354px; padding: 0 0 18px;
+  border: 0; border-radius: 10px; background: #1b1b1c; box-shadow: none; overflow: hidden;
+  transform: translateY(-20px); animation: none;
+  .change-room-header { height: 39px; padding: 0 11px; background: #2b2c2f; }
+  .change-room-title { font: 400 18px/22px Arial, sans-serif; letter-spacing: 0; color: #eee; }
+  .change-room-close-btn { width: 24px; height: 24px; padding: 0; border: 0; border-radius: 0; background: transparent; color: #7d8991; }
+  .change-room-close-btn svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 4; }
+  .change-room-divider { display: none; }
+  .change-room-desc { margin: 20px 16px; text-align: center; font: 400 16px/20px Arial, sans-serif; color: #eee; }
+  .change-room-options { gap: 9px; margin: 0 18px; }
+  .change-room-options .room-option-item {
+    position: relative; height: 38px; padding: 0 10px; gap: 14px; border: 1px solid transparent;
+    border-radius: 10px; background: #121313; box-shadow: none; transition: none;
+    input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+    &.selected { border-color: #28be00; background: #121313; box-shadow: none; }
+    &:focus-within { outline: none; }
+    .room-radio-circle { width: 18px; height: 18px; border: 1px solid #2acb00; box-shadow: none; }
+    .room-radio-circle.checked { border-color: #2acb00; box-shadow: none; }
+    .room-radio-dot { width: 10px; height: 10px; background: #28c900; }
+    .room-option-label { font: 400 16px/20px Arial, sans-serif; color: #e9e9e9; }
+  }
+  .change-room-actions { margin-top: 61px; }
+  .change-room-actions .btn-confirm-room-change {
+    width: 87px; height: 44px; padding: 0; border: 1px solid #66904b; border-radius: 14px;
+    background: #28a809; color: #fff; box-shadow: none; font: 400 16px/20px Arial, sans-serif;
+    letter-spacing: 0; transition: none;
+    &:hover, &:active { transform: none; box-shadow: none; }
+    &:disabled { background: #235b13; color: #808778; cursor: default; }
+  }
+}
+.game-menu-page-card { width: min(563px, calc(100vw - 38px)); max-height: calc(100dvh - 60px); overflow-y: auto; border-radius: 10px; background: #1b1b1c; color: #eee; font: 400 16px/1.5 Arial, sans-serif; }
+.game-menu-page-header { display: flex; align-items: center; justify-content: space-between; min-height: 39px; padding: 0 11px; background: #2b2c2f; }
+.game-menu-page-header h3 { margin: 0; font: 400 18px/22px Arial, sans-serif; }
+.game-menu-page-header button { display: grid; place-items: center; width: 24px; height: 24px; padding: 0; border: 0; background: none; color: #7d8991; cursor: pointer; }
+.game-menu-page-header svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 4; }
+.game-menu-page-body { padding: 20px 18px; }
+.game-menu-page-body p { margin: 0 0 16px; }
+.game-menu-page-body dl { margin: 0; }
+.game-menu-page-body dl > div { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid #303234; }
+.game-menu-page-body dd { margin: 0; }
+.game-menu-action { padding: 10px 16px; border: 1px solid #66904b; border-radius: 12px; background: #235b13; color: #eee; font: 400 16px/20px Arial, sans-serif; cursor: pointer; }
+.game-avatar-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+.game-avatar-grid button { padding: 5px; border: 1px solid transparent; border-radius: 12px; background: #121313; cursor: pointer; }
+.game-avatar-grid button.selected { border-color: #28be00; }
+.game-avatar-grid app-game-avatar { display: block; width: 100%; aspect-ratio: 1; border-radius: 50%; }
+@media (max-width: 900px) {
+  .profile-dropdown-menu.aviator-settings-menu {
+    // Reference phone capture: panel spans 75.6% of the screen, below the menu icon.
+    --menu-unit: var(--phone-unit);
+    width: calc(434 * var(--menu-unit));
+    max-width: calc(100vw - 20px);
+    top: calc(100% + calc(13 * var(--menu-unit)));
+    right: calc(40 * var(--menu-unit));
+    max-height: calc(100dvh - calc(125 * var(--menu-unit)));
+    border-radius: calc(7 * var(--menu-unit));
+    font-size: calc(20 * var(--menu-unit));
+    overscroll-behavior: contain;
+    .settings-user-header {
+      height: calc(83 * var(--menu-unit));
+      padding: 0 calc(14 * var(--menu-unit));
+      gap: calc(14 * var(--menu-unit));
+    }
+    .settings-avatar {
+      width: calc(54 * var(--menu-unit)); height: calc(54 * var(--menu-unit));
+      flex-basis: calc(54 * var(--menu-unit));
+    }
+    .settings-user-name { font-size: calc(24 * var(--menu-unit)); line-height: calc(28 * var(--menu-unit)); }
+    .change-avatar-btn {
+      flex-basis: calc(128 * var(--menu-unit)); height: calc(56 * var(--menu-unit));
+      padding: 0 calc(9 * var(--menu-unit)); gap: calc(6 * var(--menu-unit));
+      border-radius: calc(30 * var(--menu-unit));
+      font-size: calc(16 * var(--menu-unit)); line-height: calc(19 * var(--menu-unit));
+    }
+    .change-avatar-btn svg { width: calc(29 * var(--menu-unit)); height: calc(29 * var(--menu-unit)); flex-basis: calc(29 * var(--menu-unit)); }
+    .settings-menu-row {
+      height: calc(60.6 * var(--menu-unit)); padding: 0 calc(20 * var(--menu-unit));
+      gap: calc(13 * var(--menu-unit));
+      font-size: calc(20 * var(--menu-unit)); line-height: calc(24 * var(--menu-unit));
+    }
+    .settings-menu-icon { width: calc(22 * var(--menu-unit)); height: calc(24 * var(--menu-unit)); flex-basis: calc(22 * var(--menu-unit)); }
+    .settings-preference { padding-right: calc(15 * var(--menu-unit)); }
+    .settings-switch {
+      width: calc(46 * var(--menu-unit)); height: calc(32 * var(--menu-unit));
+      flex-basis: calc(46 * var(--menu-unit)); border-radius: calc(20 * var(--menu-unit));
+    }
+    .settings-switch i {
+      left: calc(5 * var(--menu-unit)); top: calc(5 * var(--menu-unit));
+      width: calc(22 * var(--menu-unit)); height: calc(22 * var(--menu-unit));
+    }
+    .settings-switch.on i { left: calc(19 * var(--menu-unit)); }
+    .settings-menu-separator { height: calc(26 * var(--menu-unit)); }
+    .settings-room-row .settings-menu-icon {
+      width: calc(26 * var(--menu-unit)); height: calc(26 * var(--menu-unit));
+      flex-basis: calc(26 * var(--menu-unit));
+      margin-left: calc(-2 * var(--menu-unit)); margin-right: calc(-2 * var(--menu-unit));
+    }
+    .settings-home-btn {
+      height: calc(60 * var(--menu-unit)); gap: calc(7 * var(--menu-unit));
+      font-size: calc(17 * var(--menu-unit)); line-height: calc(22 * var(--menu-unit));
+    }
+    .settings-home-btn svg { width: calc(22 * var(--menu-unit)); height: calc(22 * var(--menu-unit)); }
+  }
+}
+@media (max-width: 600px) {
+  .modal-card.change-room-card .change-room-desc { font-size: 14px; }
+  .game-avatar-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
