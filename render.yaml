@@ -1,5 +1,5 @@
 # Render Blueprint for Winbet: the Express + Socket.IO game server.
-# The Angular front end is hosted on Cloudflare Pages (https://winbet.site).
+# The Angular front end is hosted on Cloudflare Pages (https://winbett.site).
 # Deploy with: Render Dashboard -> New -> Blueprint -> pick this repo.
 # Values marked "sync: false" are secrets: Render prompts for them on first
 # deploy and never stores them in this file.
@@ -22,7 +22,7 @@ services:
       - key: MONGODB_DB_NAME
         value: winbet
       - key: ALLOWED_ORIGINS
-        value: https://winbet.site,https://www.winbet.site,https://api.winbet.site
+        value: https://winbett.site,https://www.winbett.site,https://api.winbett.site
       - key: NEXUSPAY_BASE_URL
         value: https://makamescopay.com/api
       - key: NEXUSPAY_PENDING_PAYMENT_EXPIRY_MS

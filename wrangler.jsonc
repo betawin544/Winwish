@@ -1,5 +1,5 @@
 {
-  // Cloudflare Pages configuration for the Winbet Angular front end (winbet.site).
+  // Cloudflare Pages configuration for the Winbet Angular front end (winbett.site).
   // Build command: npm run build
   // Build output directory: dist/frontend/browser
   "name": "winbet",

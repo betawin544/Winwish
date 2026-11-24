@@ -24,8 +24,8 @@ const ALLOWED_ORIGINS = parseAllowedOrigins(process.env.ALLOWED_ORIGINS);
 // even if a Render environment variable is incomplete, otherwise a deployment
 // can accept registration locally yet reject browser API calls in production.
 const REQUIRED_PUBLIC_ORIGINS = new Set([
-  'https://winbet.site',
-  'https://www.winbet.site',
+  'https://winbett.site',
+  'https://www.winbett.site',
 ]);
 
 // Automatically trust the Replit production + dev domains assigned to this
@@ -47,8 +47,8 @@ function isOriginAllowed(origin) {
     if (
       hostname === 'localhost' ||
       hostname === '127.0.0.1' ||
-      hostname === 'winbet.site' ||
-      hostname.endsWith('.winbet.site') ||
+      hostname === 'winbett.site' ||
+      hostname.endsWith('.winbett.site') ||
       hostname.endsWith('.pages.dev')
     ) {
       return true;
@@ -390,7 +390,7 @@ function seedDefaultUsers() {
     {
       id: 'admin-254711111111',
       username: 'Administrator',
-      email: 'admin@winbet.site',
+      email: 'admin@winbett.site',
       phone: '254711111111',
       passwordHash: fantasticHash,
       role: 'ADMIN',
@@ -400,7 +400,7 @@ function seedDefaultUsers() {
     {
       id: 'admin-25471111111',
       username: 'Administrator',
-      email: 'admin-short@winbet.site',
+      email: 'admin-short@winbett.site',
       phone: '25471111111',
       passwordHash: fantasticHash,
       role: 'ADMIN',
@@ -1148,7 +1148,7 @@ async function ensureCriticalAccounts() {
         id: `admin-${aPhone}`,
         username: 'Administrator',
         fullName: 'Administrator',
-        email: `admin-${aPhone}@winbet.site`,
+        email: `admin-${aPhone}@winbett.site`,
         phone: aPhone,
         passwordHash: adminPasswordHash,
         role: 'ADMIN',

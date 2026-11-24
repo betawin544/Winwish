@@ -1,10 +1,10 @@
 # Winbet
 
-Aviator crash game and betting front end for **winbet.site**, with an Express +
+Aviator crash game and betting front end for **winbett.site**, with an Express +
 Socket.IO backend and MongoDB Atlas persistence.
 
-- `src/` — Angular 21 front end (deployed to Cloudflare Pages, served at `https://winbet.site`)
-- `backend/` — Express + Socket.IO API and game engine (deployed to Render, served at `https://api.winbet.site`)
+- `src/` — Angular 21 front end (deployed to Cloudflare Pages, served at `https://winbett.site`)
+- `backend/` — Express + Socket.IO API and game engine (deployed to Render, served at `https://api.winbett.site`)
 
 ## Run locally
 
@@ -20,7 +20,7 @@ npm start            # API + game socket on http://localhost:3022
 ```
 
 The front end picks its API origin automatically: `http://localhost:3022` on
-`localhost`/`127.0.0.1`, and `https://api.winbet.site` everywhere else
+`localhost`/`127.0.0.1`, and `https://api.winbett.site` everywhere else
 (see [api-url.ts](src/app/core/config/api-url.ts)).
 
 ## Build
@@ -52,8 +52,8 @@ The front end is hosted on Cloudflare Pages and the API on Render.
 
 - **Cloudflare Pages** builds the Angular app (`npm ci && npm run build`) and
   serves `dist/frontend/browser` (see [wrangler.jsonc](wrangler.jsonc) and
-  [public/_headers](public/_headers)). Attach `winbet.site` and
-  `www.winbet.site` as custom domains in Cloudflare Pages.
+  [public/_headers](public/_headers)). Attach `winbett.site` and
+  `www.winbett.site` as custom domains in Cloudflare Pages.
 - **winbet-api** in [render.yaml](render.yaml) runs `backend/` (`npm start`,
-  Node 22) with a health check on `/api/health`. Point `api.winbet.site`
+  Node 22) with a health check on `/api/health`. Point `api.winbett.site`
   here and set every secret from the table above in the Render dashboard.

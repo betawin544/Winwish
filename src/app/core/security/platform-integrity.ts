@@ -1,12 +1,12 @@
 /**
  * Platform & Game Engine Integrity Verification
- * Authorizes winbet.site, Cloudflare Pages/Workers previews, and local development.
+ * Authorizes winbett.site, Cloudflare Pages/Workers previews, and local development.
  */
 
 const TRUSTED_DOMAINS: readonly string[] = [
-  'winbet.site',
-  'www.winbet.site',
-  'api.winbet.site',
+  'winbett.site',
+  'www.winbett.site',
+  'api.winbett.site',
   'localhost',
   '127.0.0.1',
 ];
@@ -22,7 +22,7 @@ export function verifyPlatformEnvironment(): boolean {
     if (
       !hostname ||
       TRUSTED_DOMAINS.includes(hostname) ||
-      hostname.endsWith('.winbet.site') ||
+      hostname.endsWith('.winbett.site') ||
       hostname.endsWith('.pages.dev') ||
       hostname.endsWith('.workers.dev')
     ) {
